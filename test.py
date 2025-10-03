@@ -2,10 +2,11 @@
 First make the virtual enviornment, just a grid with a bunch of cells
 """
 
-import numpy as np
+import random
 
 WIDTH = 100
 HEIGHT = 100
+QUANT = 150
 
 MOVEMENTS = [
     (1,0),
@@ -32,6 +33,13 @@ SURVIVAL_RULES: {'near': near_survive_func,
 REPRODUCE_RULE: {'near': near_reproduce_func,
                 'away' : away_reproduce_func,
                 'kill': kill_reproduce_func}
+
+COLORS = ['red', 'blue', 'green']
+
+COLOR_ATTR = { 'red': [['near', 'red', 2, 4], ['near', 'red', 3, 4]],
+              'blue': [['near', 'red', 0, 1], ['near', 'red', 0, 0]],
+              'green': [['kill', 'red', 0, 7], ['near', 'red', 2, 7]]
+}
 class Cell:
     
     def __init__(self, row, column):
@@ -40,8 +48,8 @@ class Cell:
         self._occupant = None
         
     def set_occupant(self, new_occupant):
-        if self._occupant is not None:
-            return
+        if self._occupant is not None and new_occupant is not None:
+            return False
         self._occupant = new_occupant
 
     def get_occupant(self):
@@ -59,7 +67,100 @@ class Grid:
                 row.append(Cell(i, q))
             grid.append(row)
         self._grid = grid
+
+    def new_game(self,  number_of_lives = QUANT):
+        for i in range(QUANT):
+            while True:
+                new_y = random.randint(0, HEIGHT-1)
+                new_x = random.randint(0, WIDTH-1)
+                if self._grid[new_y][new_x].get_occupant() is None:
+                    color = random.choice(COLORS)
+                    self._grid[new_y][new_x].set_occupant(Life(color, self, (new_y, new_x)))
+
+    def next_turn(self):
+        for row in self._grid:
+            for cell in row:
+                if cell.get_occupant() is not None:
+                    life = cell.get_occupant
+                    life.next_gen()
+
+    def run_simulation(self):
+        while True:
+            next = input('Advance?')
+            self.next_turn()
+            self.print_grid()
+
+    def print_grid(self):
+        for row in self._grid:
+            printable = []
+            for cell in row:
+                occupant = cell.get_occupant()
+                if occupant is None:
+                    printable.append(' ')
+                elif occupant.get_color() == 'red':
+                    printable.append('r')
+                elif occupant.get_color() == 'blue':
+                    printable.append('b')
+                elif occupant.get_color() == 'green':
+                    printable.append('g')
+                else:
+                    printable.append('?')
+            print(printable)
+class Life:
+    def __init__(self, color, grid, cell):
+        self._color = color
+        self._grid = grid
+        self._cell = cell
+        self._fitness_attributes = COLOR_ATTR[color]
+        self._fitness_func = self._fitness_attributes[0][0]
+
+    def check_survival(self):
+        return self._fitness_func(*self._fitness_attributes[0])
+
+    def check_reproduce(self):
+        return self._fitness_func(*self._fitness_attrributes[1])
+
+    def reproduce(self):
+        for direction in random.shuffle(MOVEMENTS + DIAGONALS):
+            new_x = self.cell[1] + direction[1]
+            new_y = self.cell[0] + direction[0]
+            if not (0 <= new_x <= WIDTH -1) or not (0 <= new_y <= HEIGHT - 1):
+                continue
+            if self.grid[new_y][new_x].get_occupant is None:
+                self.grid[new_y][new_x].set_occupant(Life(self._color, self._grid, (new_y, new_x)))
+                break
+
+    def die(self):
+        self.grid[self.cell[0][self.[1]].set_occupant(None) 
+
+    def survive_func(self, type, target, min, max):
+        count = 0
+        for direction in MOVEMENTS + DIAGONALS:
+            new_x = self.cell[1] + direction[1]
+            new_y = self.cell[0] + direction[0]
+            if not (0 <= new_x <= WIDTH -1) or not (0 <= new_y <= HEIGHT - 1):
+                continue
+            if self.grid[new_y][new_x].get_occupant.get_color() == target:
+                count += 1
+        if min <= count <= max:
+            return 1
+        return 0
+
+    def next_gen(self):
+        if self.check_survival == 1:
+            if self.check_reproduce == 1:
+                self.reproduce()
+        else:
+            self.die()
+
+    def get_color(self):
+        return self._color
+
+
+
+
 """
+
 Determining fitness (reproduction using simple rules:
 Types:
 Next to x y's, could be a range
@@ -89,15 +190,4 @@ class FitnessAction:
         """
         self._survive_function(cell, self._target, self._quantity_min, self._quantity_max)
 
-def near_survive_func(cell, target, low_bound, high_bound):
-    count = 0
-    for direction in MOVEMENTS + DIAGONALS:
-        new_x = cell[1] + direction[1]
-        new_y = cell[0] + direction[0]
-        if not (0 <= new_x <= WIDTH -1) or not (0 <= new_y <= HEIGHT - 1):
-            continue
-        if grid[new_y][new_x].get_occupant.get_color() == target:
-            count += 1
-    if low_bound <= count <= highbound:
-        return 1
-    return False
+
