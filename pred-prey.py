@@ -11,8 +11,10 @@ MAX_HYDRO = {'deer':15, 'wolf':22}
 SPAWN_CHANCES = {'grass': .3, 'deer':.21, 'wolf': .08}
 ANIMALS = ['deer', 'wolf']
 ACTIONS = ['eat','move','reproduce','nothing','drink']
+DIRECTIONS =[(0,0),(1,0),(0,1),(-1,0),(0,-1)]
 
 class World:
+    
     def __init__(self, height=HEIGHT, width=WIDTH):
         self._height = height
         self._width = width
@@ -21,23 +23,71 @@ class World:
         for i in range(height):
             row = []
             for j in range(width):
-                row.append(Cell(self, (i, j))
+                row.append(Cell(self, (i, j)))
             self._grid.append(row)
+    
+    def progress_sim(self):
+        for i in range(self._grid):
+            for j in range(self._grid):
+                occupant = self._grid[i][j].get_occupant()
+                terrain = self._grid[i][j].get_terrain()
+                choice = occupant.decision()
+                self.handle_choice(occupant, choice)
+                if terrain == 'dirt':
+                    if random.random < SPAWN_CHANCES['grass']:
+                        self._grid[i][j].set_terrain('grass')
 
+    def handle_choice(occupant, choice):
+        cell = occupant.get_cell()
+        coords = cell.get_coords
+        if choice == 'nothing':
+            return
+        if choice == 'reproduce':
+            for direction in DIRECTIONS:
+                new_x = (direction[0] + coords[0]) % self._width
+                new_y = (direction[1] + coords[1]) % self._height
+                if self._grid[new_y][new_x].get_occupant() is None:
+                    # Reproduce 
+                    pass
+                    break
+        if choice == 'drink':
+            pass
+        if choice == 'eat':
+            pass
+        if choice == 'move_north':
+            pass
+        if choice == 'move_east':
+            pass
+        if choice == 'move_south':
+            pass
+        if choice == 'move_west':
+            pass
+        occupant.reduce_energy(1)
+        if occupant.get_water()==0:
+            occupant.reduce_energy(1)
+        
 class Cell:
     def __init__(self, grid, coords):
         self._occupant = None
         self._terrain = None
+        self._grid = grid
+        self._coords = coords
 
     def set_occupant(self, occupant):
-        if self._occupant is None:
-            self._occupant = occupant
-            return True
-        return False
+        self._occupant = occupant
 
     def set_terrain(self, terrain):
         self._terrain = terrain
 
+    def get_occupant(self):
+        return self._occupant
+
+    def get_terrain(self):
+        return self._terrain
+
+    def get_coords(self):
+        return self._coords
+        
 class Terrain:
     def __init__(self, type):
         self._type = type
@@ -168,6 +218,39 @@ class Animal:
             results.append(sum)
         m = max(results)
         ind = results.index(m)
+        decision = ACTIONS[ind]
+        if decision == 'move':
+            results = []
+            for i in range(4):
+                sum = 0
+                for j in range(4):
+                    if terrain == 'water':
+                        sum += self._genome[i][j+13]
+                    else:
+                        sum += occupants[j] * self._genome[i][j]
+                for j in range(4):
+                    sum += terrains[j+4] * self._genome[i][j+4]
+                sum += this_cell * self._genome[i][8]
+                sum += wolves * self._genome[i][9]
+                sum += deer * self._genome[i][10]
+                sum += empties * self._genome[i][27]
+                sum += e_deficit * self._genome[i][11]
+                sum += w_deficit * self._genome[i][16]
+                sum += grasses * self._genome[i][18]
+                sum += dirts * self._genome[i][19]
+                sum += waters * self._genome[i][20]
+                results.append(sum)
+            m = max(results)
+            ind = results.index(m)
+            if ind = 0:
+                decision = 'move_north'
+            elif ind = 1:
+                decision = 'move_east'
+            elif ind = 2:
+                decision = 'move_south'
+            else:
+                decision = 'move_west'
+        return decision
         
 class Deer(Animal):
     def __init__(self, cell):
