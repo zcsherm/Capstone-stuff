@@ -2,7 +2,7 @@ import random
 
 
 HEIGHT = 20
-WIDTH = 40
+WIDTH = 20
 CELLS = HEIGHT * WIDTH
 TERRAINS = ['grass', 'dirt', 'water']
 MAX_ENERGIES = {'deer':10, 'wolf':20}
@@ -45,8 +45,8 @@ class World:
                     cell.set_occupant(Animal('wolf', cell))
                     
     def progress_sim(self):
-        for i in range(self._grid):
-            for j in range(self._grid):
+        for i in range(self._height):
+            for j in range(self._width):
                 occupant = self._grid[i][j].get_occupant()
                 if occupant is not None:
                     if occupant.get_flag() is False:
@@ -60,7 +60,7 @@ class World:
                 if occupant is not None:
                     occupant.reset_flag()
                 if terrain == 'dirt':
-                    if random.random < SPAWN_CHANCES['grass']:
+                    if random.random() < SPAWN_CHANCES['grass']:
                         self._grid[i][j].set_terrain('grass')
 
     def print_grid(self):
@@ -69,7 +69,9 @@ class World:
             for cell in row:
                 space = ''
                 terrain = cell.get_terrain()
-                animal = cell.get_occupant().get_type()
+                animal = cell.get_occupant()
+                if animal is not None:
+                    animal = animal.get_type()
                 if terrain == 'dirt':
                     space = 'd'
                 elif terrain == 'grass':
@@ -121,7 +123,7 @@ class World:
             else:
                 for direction in DIRECTIONS:
                     new_x = (direction[1] + coords[1]) % self._width
-                    new_y = (direction[0] + coords[0) % self._height
+                    new_y = (direction[0] + coords[0]) % self._height
                     if self._grid[new_y][new_x].get_occupant().get_type() == 'deer':
                         occupant.eat('deer')
                         self._grid[new_y][new_x].set_occupant(None)
@@ -251,18 +253,18 @@ class Animal:
                 13. N_water 14 E_water 15 S_water 16 W_water 17. Water_level
                 18. Empties Total 19. grasses_tot, 20. Dirt tot 21. water_tot, 
         """
-        self._this_dirt_weight = random.random(-10,10)
-        self._this_grass_weight = random.random(-10,10)
-        self._NESW_weights = [random.random(-10,10) for i in range(4)]
-        self._eat_weights = [random.random(-10,10) for i in range(21)]
-        self._move_weights = [random.random(-10,10) for i in range(21)]
-        self._repro_weights = [random.random(-10,10) for i in range(21)]
-        self._nothing_weights = [random.random(-10,10) for i in range(21)]
-        self._drink_weights = [random.random(-10,10) for i in range(21)]
-        self._n_weight = [random.random(-10,10) for i in range(21)]
-        self._e_weight = [random.random(-10,10) for i in range(21)]
-        self._s_weight = [random.random(-10,10) for i in range(21)]
-        self._w_weight = [random.random(-10,10) for i in range(21)]
+        self._this_dirt_weight = random.uniform(-10,10)
+        self._this_grass_weight = random.uniform(-10,10)
+        self._NESW_weights = [random.uniform(-10,10) for i in range(4)]
+        self._eat_weights = [random.uniform(-10,10) for i in range(21)]
+        self._move_weights = [random.uniform(-10,10) for i in range(21)]
+        self._repro_weights = [random.uniform(-10,10) for i in range(21)]
+        self._nothing_weights = [random.uniform(-10,10) for i in range(21)]
+        self._drink_weights = [random.uniform(-10,10) for i in range(21)]
+        self._n_weight = [random.uniform(-10,10) for i in range(21)]
+        self._e_weight = [random.uniform(-10,10) for i in range(21)]
+        self._s_weight = [random.uniform(-10,10) for i in range(21)]
+        self._w_weight = [random.uniform(-10,10) for i in range(21)]
         self._genome = [self._eat_weights, self._move_weights, self._repro_weights, self._nothing_weights, self._drink_weights]
 
     def output_genetics(self):
@@ -367,7 +369,7 @@ class Animal:
                 grasses += 1
             else:
                 waters += 1
-        if this_terrain == 'dirt':
+            if this_terrain == 'dirt':
                 this_cell = self._this_dirt_weight
             elif terrain == 'grass':
                 this_cell = self._this_grass_weight
@@ -419,11 +421,11 @@ class Animal:
                 results.append(sum)
             m = max(results)
             ind = results.index(m)
-            if ind = 0:
+            if ind == 0:
                 decision = 'move_north'
-            elif ind = 1:
+            elif ind == 1:
                 decision = 'move_east'
-            elif ind = 2:
+            elif ind == 2:
                 decision = 'move_south'
             else:
                 decision = 'move_west'
@@ -433,6 +435,11 @@ class Deer(Animal):
     def __init__(self, cell):
         super().__init__('deer', cell)
 
-class Wolf(Animal, cell):
+class Wolf(Animal):
     def __init__(self, cell):
         super().__init__('wolf', cell)
+        
+world = World()
+for _ in range(5):
+    i = input()
+    world.forward_step()
