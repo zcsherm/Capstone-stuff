@@ -1,14 +1,14 @@
 import random
 
 
-HEIGHT = 8
-WIDTH =8
+HEIGHT = 15
+WIDTH = 15
 CELLS = HEIGHT * WIDTH
 TERRAINS = ['grass', 'dirt', 'water']
 MAX_ENERGIES = {'deer':10, 'wolf':20}
 ENERGIES = {'grass':8, 'deer':15}
 MAX_HYDRO = {'deer':15, 'wolf':22}
-SPAWN_CHANCES = {'grass': .3, 'deer':.21, 'wolf': .08}
+SPAWN_CHANCES = {'grass': .15, 'deer':.21, 'wolf': .08}
 ANIMALS = ['deer', 'wolf']
 ACTIONS = ['eat','move','reproduce','nothing','drink']
 DIRECTIONS =[(1,0),(0,1),(-1,0),(0,-1)]
@@ -209,7 +209,7 @@ class World:
                 self._grid[new_y][new_x].set_occupant(occupant)
 
         occupant.set_flag()
-        occupant.reduce_energy(1)
+        occupant.reduce_energy(random.uniform(0,2.7))
         if occupant.get_hydro()<=0:
             occupant.reduce_energy(1)
         else:
@@ -217,7 +217,6 @@ class World:
         occupant.increment_age()
         if occupant.get_energy() <= 0:
             cell.set_occupant(None)
-            occupant.set_cell(None)
             
 class Cell:
     def __init__(self, grid, coords):
