@@ -144,6 +144,7 @@ class World:
             new_x = (coords[1]) % self._width
             new_y = (coords[0]+1) % self._height
             if self._grid[new_y][new_x].get_occupant() is None and self._grid[new_y][new_x].get_terrain() != 'water':
+                print(new_x, new_y)
                 occupant.set_cell(self._grid[new_y][new_x])
                 self._grid[new_y][new_x].set_occupant(occupant)
             else:
@@ -153,6 +154,7 @@ class World:
             new_x = (coords[1]+1) % self._width
             new_y = (coords[0]) % self._height
             if self._grid[new_y][new_x].get_occupant() is None and self._grid[new_y][new_x].get_terrain() != 'water':
+                print(new_x, new_y)
                 occupant.set_cell(self._grid[new_y][new_x])
                 self._grid[new_y][new_x].set_occupant(occupant)
             else:
@@ -162,6 +164,7 @@ class World:
             new_x = (coords[1]) % self._width
             new_y = (coords[0]-1) % self._height
             if self._grid[new_y][new_x].get_occupant() is None and self._grid[new_y][new_x].get_terrain() != 'water':
+                print(new_x, new_y)
                 occupant.set_cell(self._grid[new_y][new_x])
                 self._grid[new_y][new_x].set_occupant(occupant)
             else:
@@ -171,6 +174,7 @@ class World:
             new_x = (coords[1]-1) % self._width
             new_y = (coords[0]) % self._height
             if self._grid[new_y][new_x].get_occupant() is None and self._grid[new_y][new_x].get_terrain() != 'water':
+                print(new_x, new_y)
                 occupant.set_cell(self._grid[new_y][new_x])
                 self._grid[new_y][new_x].set_occupant(occupant)
 
@@ -468,7 +472,6 @@ class Animal:
                 sum += dirts * genes[i][19]
                 sum += waters * genes[i][20]
                 results.append(sum)
-            print(results)
             m = max(results)
             ind = results.index(m)
             if ind == 0:
@@ -479,7 +482,6 @@ class Animal:
                 decision = 'move_south'
             else:
                 decision = 'move_west'
-        print(decision)
         return decision
         
 class Deer(Animal):
