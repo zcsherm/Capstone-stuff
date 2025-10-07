@@ -28,7 +28,9 @@ class World:
             for j in range(width):
                 row.append(Cell(self, (i, j)))
             self._grid.append(row)
-
+        self.seed_cells()
+        self.print_grid()
+        
     def seed_cells(self):
         for row in self._grid:
             for cell in row:
@@ -81,7 +83,11 @@ class World:
                     space = 'W'
                 print_row.append(space)
             print(print_row)
-            
+
+    def forward_step(self):
+        self.progress_sim()
+        self.print_grid()
+        
     def handle_choice(occupant, choice):
         cell = occupant.get_cell()
         coords = cell.get_coords
