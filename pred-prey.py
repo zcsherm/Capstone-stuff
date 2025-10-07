@@ -89,6 +89,16 @@ class World:
     def forward_step(self):
         self.progress_sim()
         self.print_grid()
+
+    def get_animal_at(self, x, y):
+        t=self._grid[y][x].get_occupant()
+        if t is not None:
+            t = t.get_type()
+        return t
+
+    def get_terrain_at(self, x, y):
+        t = self._grid[y][x].get_terrain()
+        return t
         
     def handle_choice(occupant, choice):
         cell = occupant.get_cell()
@@ -192,6 +202,24 @@ class Cell:
 
     def get_coords(self):
         return self._coords
+
+    def get_neighbors_animals(self):
+        neighbors = []
+        for direction in DIRECTIONS:
+            new_x = (direction[1] + coords[1]) % self._width
+            new_y = (direction[0] + coords[0]) % self._height
+            a=self._grid.get_animal_at(new_x, new_y)
+            neighbors.append(a)
+        return neighbors
+        
+    def get_neighbors_terrains(self):
+        neighbors = []
+        for direction in DIRECTIONS:
+            new_x = (direction[1] + coords[1]) % self._width
+            new_y = (direction[0] + coords[0]) % self._height
+            a=self._grid.get_terrain_at(new_x, new_y)
+            neighbors.append(a)
+        return neighbors
         
 class Terrain:
     def __init__(self, type):
@@ -337,12 +365,8 @@ class Animal:
         Gather info about surrounding cells and own info
         """
         this_terrain = self._cell.get_terrain()
-        n_occupant, n_terrain = self.cell.get_n_details()
-        e_occupant, e_terrain = self.cell.get_e_details()
-        s_occupant, s_terrain = self.cell.get_s_details()
-        w_occupant, w_terrain = self.cell.get_w_details()
-        occupants = self.cell.get_neighbors()
-        terrains = self.celll.get_terrains()
+        occupants = self._cell.get_neighbors_animals()
+        terrains = self._celll.get_neighbors_terrains()
         deers = 0
         wolves = 0
         empties = 0
