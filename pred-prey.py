@@ -15,6 +15,7 @@ DIRECTIONS =[(1,0),(0,1),(-1,0),(0,-1)]
 WATER_CHANCE = .25
 DEER_POP = int(CELLS * .3)
 WOLF_POP = int(CELLS * .15)
+MUTATION_RATE = .1
 
 class World:
     
@@ -292,22 +293,26 @@ class Animal:
         self._age = 0
         self._hydro = MAX_HYDRO[type]
         self._flag = False
+        
         if genome is None:
             self.set_genetics()
         else:
-            self._this_dirt_weight = genome[0]
-            self._this_grass_weight = genome[1]
-            self._NESW_weights = genome[2]
-            self._eat_weights = genome[3]
-            self._move_weights = genome[4]
-            self._repro_weights =genome[5]
-            self._nothing_weights = genome[6]
-            self._drink_weights =genome[7]
-            self._n_weight = genome[8]
-            self._e_weight = genome[9]
-            self._s_weight = genome[10]
-            self._w_weight = genome[11]
-            self._genome = genome[12]
+            if random.random() <= MUTATION_RATE:
+                self.set_genetics()
+            else:
+                self._this_dirt_weight = genome[0]
+                self._this_grass_weight = genome[1]
+                self._NESW_weights = genome[2]
+                self._eat_weights = genome[3]
+                self._move_weights = genome[4]
+                self._repro_weights =genome[5]
+                self._nothing_weights = genome[6]
+                self._drink_weights =genome[7]
+                self._n_weight = genome[8]
+                self._e_weight = genome[9]
+                self._s_weight = genome[10]
+                self._w_weight = genome[11]
+                self._genome = genome[12]
     
     def set_genetics(self):
         """
