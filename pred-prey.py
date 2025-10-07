@@ -103,7 +103,7 @@ class World:
         
     def handle_choice(self, occupant, choice):
         cell = occupant.get_cell()
-        coords = cell.get_coords
+        coords = cell.get_coords()
         if choice == 'nothing':
             occupant.reduce_hydro(-1)
         if choice == 'reproduce':
@@ -114,7 +114,7 @@ class World:
                     # Reproduce 
                     new_animal = Animal(occupant.get_type(), self._grid[new_y][new_x], occupant.output_genetics())
                     new_animal.set_flag()
-                    self._grid[new_y][new_x].set_occupant(new_occupant)
+                    self._grid[new_y][new_x].set_occupant(new_animal)
                     break
                     
         if choice == 'drink':
@@ -178,8 +178,8 @@ class World:
         if occupant.get_hydro()<=0:
             occupant.reduce_energy(1)
         else:
-            occupant.reduce_water(1)
-        if occupant.get_energy <= 0:
+            occupant.reduce_hydro(1)
+        if occupant.get_energy() <= 0:
             cell.occupant = None
             
 class Cell:
