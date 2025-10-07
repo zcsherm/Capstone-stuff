@@ -36,6 +36,7 @@ class World:
             for cell in row:
                 if random.random() < WATER_CHANCE:
                     cell.set_terrain('water')
+                    continue
                 else:
                     cell.set_terrain('grass')
                 animal_roll = random.random()
@@ -100,7 +101,7 @@ class World:
         t = self._grid[y][x].get_terrain()
         return t
         
-    def handle_choice(occupant, choice):
+    def handle_choice(self, occupant, choice):
         cell = occupant.get_cell()
         coords = cell.get_coords
         if choice == 'nothing':
@@ -128,7 +129,7 @@ class World:
             if occupant.get_type() == 'deer':
                 if cell.get_terrain() == 'grass':
                     occupant.eat('grass')
-                    self._grid[coords[0]][coords[1]].set_terrain('dirt')
+                    cell.set_terrain('dirt')
                     
             else:
                 for direction in DIRECTIONS:
@@ -174,7 +175,7 @@ class World:
 
         occupant.set_flag()
         occupant.reduce_energy(1)
-        if occupant.get_water()<=0:
+        if occupant.get_hydro()<=0:
             occupant.reduce_energy(1)
         else:
             occupant.reduce_water(1)
@@ -206,8 +207,8 @@ class Cell:
     def get_neighbors_animals(self):
         neighbors = []
         for direction in DIRECTIONS:
-            new_x = (direction[1] + coords[1]) % self._width
-            new_y = (direction[0] + coords[0]) % self._height
+            new_x = (direction[1] + self._coords[1]) % WIDTH
+            new_y = (direction[0] + self._coords[0]) % HEIGHT
             a=self._grid.get_animal_at(new_x, new_y)
             neighbors.append(a)
         return neighbors
@@ -215,8 +216,8 @@ class Cell:
     def get_neighbors_terrains(self):
         neighbors = []
         for direction in DIRECTIONS:
-            new_x = (direction[1] + coords[1]) % self._width
-            new_y = (direction[0] + coords[0]) % self._height
+            new_x = (direction[1] + self._coords[1]) % WIDTH
+            new_y = (direction[0] + self._coords[0]) % HEIGHT
             a=self._grid.get_terrain_at(new_x, new_y)
             neighbors.append(a)
         return neighbors
@@ -366,7 +367,7 @@ class Animal:
         """
         this_terrain = self._cell.get_terrain()
         occupants = self._cell.get_neighbors_animals()
-        terrains = self._celll.get_neighbors_terrains()
+        terrains = self._cell.get_neighbors_terrains()
         deers = 0
         wolves = 0
         empties = 0
@@ -395,24 +396,35 @@ class Animal:
                 waters += 1
             if this_terrain == 'dirt':
                 this_cell = self._this_dirt_weight
-            elif terrain == 'grass':
+            elif this_terrain == 'grass':
                 this_cell = self._this_grass_weight
         e_deficit = MAX_ENERGIES[self._type] - self._energy
-        w_deficit = MAX_HYDRP[self._type] - self._hydro
+        w_deficit = MAX_HYDRO[self._type] - self._hydro
         results = []
         for i in range(5):
             sum = 0
             for j in range(4):
-                if terrain == 'water':
-                    sum += self._genome[i][j+13]
+                a = occupants [j]
+                if a == 'deer':
+                    s = 1
+                if a == 'wolf':
+                    s = -1
                 else:
-                    sum += occupants[j] * self._genome[i][j]
+                    continue
+                sum += s * self._genome[i][j]
             for j in range(4):
-                sum += terrains[j+4] * self._genome[i][j+4]
+                if terrains[j] == 'water':
+                    sum += self._genome[i][j+12]
+                else:
+                    if terrains[j] == 'grass':
+                        s = 1
+                    else:
+                        s = -1
+                    sum += s * self._genome[i][j+4]
             sum += this_cell * self._genome[i][8]
             sum += wolves * self._genome[i][9]
-            sum += deer * self._genome[i][10]
-            sum += empties * self._genome[i][27]
+            sum += deers * self._genome[i][10]
+            sum += empties * self._genome[i][17]
             sum += e_deficit * self._genome[i][11]
             sum += w_deficit * self._genome[i][16]
             sum += grasses * self._genome[i][18]
@@ -427,16 +439,27 @@ class Animal:
             for i in range(4):
                 sum = 0
                 for j in range(4):
-                    if terrain == 'water':
-                        sum += self._genome[i][j+13]
+                    a = occupants [j]
+                    if a == 'deer':
+                        s = 1
+                    if a == 'wolf':
+                        s = -1
                     else:
-                        sum += occupants[j] * self._genome[i][j]
+                        continue
+                    sum += s * self._genome[i][j]
                 for j in range(4):
-                    sum += terrains[j+4] * self._genome[i][j+4]
+                    if terrains[j] == 'water':
+                        sum += self._genome[i][j+12]
+                    else:
+                        if terrains[j] == 'grass':
+                            s = 1
+                        else:
+                            s = -1
+                        sum += s * self._genome[i][j+4]
                 sum += this_cell * self._genome[i][8]
                 sum += wolves * self._genome[i][9]
-                sum += deer * self._genome[i][10]
-                sum += empties * self._genome[i][27]
+                sum += deers * self._genome[i][10]
+                sum += empties * self._genome[i][17]
                 sum += e_deficit * self._genome[i][11]
                 sum += w_deficit * self._genome[i][16]
                 sum += grasses * self._genome[i][18]
