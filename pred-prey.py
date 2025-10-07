@@ -436,6 +436,7 @@ class Animal:
         ind = results.index(m)
         decision = ACTIONS[ind]
         if decision == 'move':
+            genes = [self._n_weight, self._e_weight, self._s_weight, self._w_weight]
             results = []
             for i in range(4):
                 sum = 0
@@ -447,25 +448,25 @@ class Animal:
                         s = -1
                     else:
                         continue
-                    sum += s * self._genome[i][j]
+                    sum += s * genes[i][j]
                 for j in range(4):
                     if terrains[j] == 'water':
-                        sum += self._genome[i][j+12]
+                        sum += genes[i][j+12]
                     else:
                         if terrains[j] == 'grass':
                             s = 1
                         else:
                             s = -1
-                        sum += s * self._genome[i][j+4]
-                sum += this_cell * self._genome[i][8]
-                sum += wolves * self._genome[i][9]
-                sum += deers * self._genome[i][10]
-                sum += empties * self._genome[i][17]
-                sum += e_deficit * self._genome[i][11]
-                sum += w_deficit * self._genome[i][16]
-                sum += grasses * self._genome[i][18]
-                sum += dirts * self._genome[i][19]
-                sum += waters * self._genome[i][20]
+                        sum += s * genes[i][j+4]
+                sum += this_cell * genes[i][8]
+                sum += wolves * genes[i][9]
+                sum += deers * genes[i][10]
+                sum += empties * genes[i][17]
+                sum += e_deficit * genes[i][11]
+                sum += w_deficit * genes[i][16]
+                sum += grasses * genes[i][18]
+                sum += dirts * genes[i][19]
+                sum += waters * genes[i][20]
                 results.append(sum)
             print(results)
             m = max(results)
