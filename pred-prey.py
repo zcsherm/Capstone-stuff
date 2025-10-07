@@ -1,8 +1,8 @@
 import random
 
 
-HEIGHT = 10
-WIDTH =10
+HEIGHT = 8
+WIDTH =8
 CELLS = HEIGHT * WIDTH
 TERRAINS = ['grass', 'dirt', 'water']
 MAX_ENERGIES = {'deer':10, 'wolf':20}
@@ -65,6 +65,15 @@ class World:
                         self._grid[i][j].set_terrain('grass')
 
     def print_grid(self):
+        deers = 0
+        wolves = 0
+        grass = 0
+        dirt = 0
+        max_age = 0
+        deer_energy = 0
+        wolf_energy = 0
+        deer_hydration = 0
+        wolf_hydration = 0
         for row in self._grid:
             print_row = []
             for cell in row:
@@ -74,19 +83,38 @@ class World:
                 if animal is not None:
                     animal = animal.get_type()
                 if terrain == 'dirt':
+                    dirt += 1
                     space = 'd'
                 elif terrain == 'grass':
+                    grass += 1
                     space = 'g'
                 elif terrain == 'water':
                     space = 'w'
-
                 if animal == 'deer':
                     space = 'D'
+                    deers += 1
+                    deer_energy += cell.get_occupant().get_energy()
+                    deer_hydration += cell.get_occupant().get_hydro()
+                    if cell.get_occupant().get_age() > max_age:
+                        max_age = cell.get_occupant().get_age()
                 elif animal == 'wolf':
+                    wolves += 1
+                    wolf_energy += cell.get_occupant().get_energy()
+                    wolf_hydration += cell.get_occupant().get_hydro()
+                    if cell.get_occupant().get_age() > max_age:
+                        max_age = cell.get_occupant().get_age()
                     space = 'W'
                 print_row.append(space)
             print(print_row)
-
+        deer_energy /= deers
+        wolf_energy /= wolves
+        deer_hydration /= deers
+        wolf_hydration /= wolves
+        print(f"\n========================\nDeer Stats -> Population: {deers}  Avg. Energy: {deer_energy}   Avg. Hydration: {deer_hydration}")
+        print(f"Wolf Stats -> Population {wolves}   Avg. Energy: {wolf_energy}   Avg. Hydration: {wolf_hydration}")
+        print(f"Terrain Stats -> Grass: {grass}   Dirt {dirt}")
+        print(f"Oldest Animal is {max_age}\n========================")
+            
     def forward_step(self):
         self.progress_sim()
         self.print_grid()
@@ -102,6 +130,7 @@ class World:
         return t
         
     def handle_choice(self, occupant, choice):
+        print(choice)
         cell = occupant.get_cell()
         coords = cell.get_coords()
         if choice == 'nothing':
@@ -145,6 +174,7 @@ class World:
             new_y = (coords[0]+1) % self._height
             if self._grid[new_y][new_x].get_occupant() is None and self._grid[new_y][new_x].get_terrain() != 'water':
                 print(new_x, new_y)
+                occupant.get_cell().set_occupant(None)
                 occupant.set_cell(self._grid[new_y][new_x])
                 self._grid[new_y][new_x].set_occupant(occupant)
             else:
@@ -155,6 +185,7 @@ class World:
             new_y = (coords[0]) % self._height
             if self._grid[new_y][new_x].get_occupant() is None and self._grid[new_y][new_x].get_terrain() != 'water':
                 print(new_x, new_y)
+                occupant.get_cell().set_occupant(None)
                 occupant.set_cell(self._grid[new_y][new_x])
                 self._grid[new_y][new_x].set_occupant(occupant)
             else:
@@ -163,8 +194,10 @@ class World:
         if choice == 'move_south':
             new_x = (coords[1]) % self._width
             new_y = (coords[0]-1) % self._height
+            
             if self._grid[new_y][new_x].get_occupant() is None and self._grid[new_y][new_x].get_terrain() != 'water':
                 print(new_x, new_y)
+                occupant.get_cell().set_occupant(None)
                 occupant.set_cell(self._grid[new_y][new_x])
                 self._grid[new_y][new_x].set_occupant(occupant)
             else:
@@ -175,6 +208,7 @@ class World:
             new_y = (coords[0]) % self._height
             if self._grid[new_y][new_x].get_occupant() is None and self._grid[new_y][new_x].get_terrain() != 'water':
                 print(new_x, new_y)
+                occupant.get_cell().set_occupant(None)
                 occupant.set_cell(self._grid[new_y][new_x])
                 self._grid[new_y][new_x].set_occupant(occupant)
 
@@ -184,6 +218,7 @@ class World:
             occupant.reduce_energy(1)
         else:
             occupant.reduce_hydro(1)
+        occupant.increment_age()
         if occupant.get_energy() <= 0:
             cell.occupant = None
             
@@ -493,6 +528,6 @@ class Wolf(Animal):
         super().__init__('wolf', cell)
         
 world = World()
-for _ in range(5):
+for _ in range(30):
     i = input()
     world.forward_step()
