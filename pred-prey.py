@@ -13,6 +13,8 @@ ANIMALS = ['deer', 'wolf']
 ACTIONS = ['eat','move','reproduce','nothing','drink']
 DIRECTIONS =[(1,0),(0,1),(-1,0),(0,-1)]
 WATER_CHANCE = .25
+DEER_POP = CELLS // 30
+WOLF_POP = CELLS // 15
 
 class World:
     
@@ -26,7 +28,20 @@ class World:
             for j in range(width):
                 row.append(Cell(self, (i, j)))
             self._grid.append(row)
-    
+
+    def seed_cells(self):
+        for row in self._grid:
+            for cell in row:
+                if random.random() < WATER_CHANCE:
+                    cell.set_terrain('water')
+                else:
+                    cell.set_terrain('grass')
+                animal_roll = random.random()
+                if  animal_roll < DEER_POP/CELLS:
+                    cell.set_occupant(Animal('deer', cell))
+                elif animal_roll < DEER_POP/CELLS + WOLF_POP/CELLS:
+                    cell.set_occupant(Animal('wolf', cell))
+                    
     def progress_sim(self):
         for i in range(self._grid):
             for j in range(self._grid):
@@ -45,7 +60,28 @@ class World:
                 if terrain == 'dirt':
                     if random.random < SPAWN_CHANCES['grass']:
                         self._grid[i][j].set_terrain('grass')
-        
+
+    def print_grid(self):
+        for row in self._grid:
+            print_row = []
+            for cell in row:
+                space = ''
+                terrain = cell.get_terrain()
+                animal = cell.get_occupant().get_type()
+                if terrain == 'dirt':
+                    space = 'd'
+                elif terrain == 'grass':
+                    space = 'g'
+                elif terrain == 'water':
+                    space = 'w'
+
+                if animal == 'deer':
+                    space = 'D'
+                elif animal == 'wolf':
+                    space = 'W'
+                print_row.append(space)
+            print(print_row)
+            
     def handle_choice(occupant, choice):
         cell = occupant.get_cell()
         coords = cell.get_coords
@@ -80,7 +116,7 @@ class World:
                 for direction in DIRECTIONS:
                     new_x = (direction[1] + coords[1]) % self._width
                     new_y = (direction[0] + coords[0) % self._height
-                    if self._grid[new_y][new_x].get_occupant() == 'deer':
+                    if self._grid[new_y][new_x].get_occupant().get_type() == 'deer':
                         occupant.eat('deer')
                         self._grid[new_y][new_x].set_occupant(None)
                         
