@@ -6,7 +6,7 @@ WIDTH =8
 CELLS = HEIGHT * WIDTH
 TERRAINS = ['grass', 'dirt', 'water']
 MAX_ENERGIES = {'deer':10, 'wolf':20}
-ENERGIES = {'grass':10, 'deer':20}
+ENERGIES = {'grass':8, 'deer':15}
 MAX_HYDRO = {'deer':15, 'wolf':22}
 SPAWN_CHANCES = {'grass': .3, 'deer':.21, 'wolf': .08}
 ANIMALS = ['deer', 'wolf']
@@ -130,7 +130,6 @@ class World:
         return t
         
     def handle_choice(self, occupant, choice):
-        print(choice)
         cell = occupant.get_cell()
         coords = cell.get_coords()
         if choice == 'nothing':
@@ -173,7 +172,6 @@ class World:
             new_x = (coords[1]) % self._width
             new_y = (coords[0]+1) % self._height
             if self._grid[new_y][new_x].get_occupant() is None and self._grid[new_y][new_x].get_terrain() != 'water':
-                print(new_x, new_y)
                 occupant.get_cell().set_occupant(None)
                 occupant.set_cell(self._grid[new_y][new_x])
                 self._grid[new_y][new_x].set_occupant(occupant)
@@ -184,7 +182,6 @@ class World:
             new_x = (coords[1]+1) % self._width
             new_y = (coords[0]) % self._height
             if self._grid[new_y][new_x].get_occupant() is None and self._grid[new_y][new_x].get_terrain() != 'water':
-                print(new_x, new_y)
                 occupant.get_cell().set_occupant(None)
                 occupant.set_cell(self._grid[new_y][new_x])
                 self._grid[new_y][new_x].set_occupant(occupant)
@@ -196,7 +193,6 @@ class World:
             new_y = (coords[0]-1) % self._height
             
             if self._grid[new_y][new_x].get_occupant() is None and self._grid[new_y][new_x].get_terrain() != 'water':
-                print(new_x, new_y)
                 occupant.get_cell().set_occupant(None)
                 occupant.set_cell(self._grid[new_y][new_x])
                 self._grid[new_y][new_x].set_occupant(occupant)
@@ -207,7 +203,6 @@ class World:
             new_x = (coords[1]-1) % self._width
             new_y = (coords[0]) % self._height
             if self._grid[new_y][new_x].get_occupant() is None and self._grid[new_y][new_x].get_terrain() != 'water':
-                print(new_x, new_y)
                 occupant.get_cell().set_occupant(None)
                 occupant.set_cell(self._grid[new_y][new_x])
                 self._grid[new_y][new_x].set_occupant(occupant)
@@ -220,7 +215,8 @@ class World:
             occupant.reduce_hydro(1)
         occupant.increment_age()
         if occupant.get_energy() <= 0:
-            cell.occupant = None
+            cell.set_occupant(None)
+            occupant.set_cell(None)
             
 class Cell:
     def __init__(self, grid, coords):
@@ -360,7 +356,7 @@ class Animal:
         return True
 
     def eat(self, target):
-        self._energy = max(self._energy + ENERGIES[target], MAX_ENERGIES[self._type])
+        self._energy = min(self._energy + ENERGIES[target], MAX_ENERGIES[self._type])
 
     def drink(self):
         self._hydro = MAX_HYDRO[self._type]
