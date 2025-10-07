@@ -11,7 +11,8 @@ MAX_HYDRO = {'deer':15, 'wolf':22}
 SPAWN_CHANCES = {'grass': .3, 'deer':.21, 'wolf': .08}
 ANIMALS = ['deer', 'wolf']
 ACTIONS = ['eat','move','reproduce','nothing','drink']
-DIRECTIONS =[(0,0),(1,0),(0,1),(-1,0),(0,-1)]
+DIRECTIONS =[(1,0),(0,1),(-1,0),(0,-1)]
+WATER_CHANCE = .25
 
 class World:
     
@@ -30,42 +31,102 @@ class World:
         for i in range(self._grid):
             for j in range(self._grid):
                 occupant = self._grid[i][j].get_occupant()
+                if occupant is not None:
+                    if occupant.get_flag() is False:
+                        choice = occupant.decision()
+                        self.handle_choice(occupant, choice)
+
+        for i in range(self._height):
+            for j in range(self._width):
+                occupant = self._grid[i][j].get_occupant()
                 terrain = self._grid[i][j].get_terrain()
-                choice = occupant.decision()
-                self.handle_choice(occupant, choice)
+                if occupant is not None:
+                    occupant.reset_flag()
                 if terrain == 'dirt':
                     if random.random < SPAWN_CHANCES['grass']:
                         self._grid[i][j].set_terrain('grass')
-
+        
     def handle_choice(occupant, choice):
         cell = occupant.get_cell()
         coords = cell.get_coords
         if choice == 'nothing':
-            return
+            occupant.reduce_hydro(-1)
         if choice == 'reproduce':
             for direction in DIRECTIONS:
-                new_x = (direction[0] + coords[0]) % self._width
-                new_y = (direction[1] + coords[1]) % self._height
+                new_x = (direction[1] + coords[1]) % self._width
+                new_y = (direction[0] + coords[0]) % self._height
                 if self._grid[new_y][new_x].get_occupant() is None:
                     # Reproduce 
-                    pass
+                    new_animal = Animal(occupant.get_type(), self._grid[new_y][new_x], occupant.output_genetics())
+                    new_animal.set_flag()
+                    self._grid[new_y][new_x].set_occupant(new_occupant)
                     break
+                    
         if choice == 'drink':
-            pass
+            for direction in DIRECTIONS:
+                new_x = (direction[1] + coords[1]) % self._width
+                new_y = (direction[0] + coords[0]) % self._height
+                if self._grid[new_y][new_x].get_terrain() == 'water':
+                    occupant.drink()
+                    break
+    
         if choice == 'eat':
-            pass
+            if occupant.get_type() == 'deer':
+                if cell.get_terrain() == 'grass':
+                    occupant.eat('grass')
+                    self._grid[coords[0]][coords[1]].set_terrain('dirt')
+                    
+            else:
+                for direction in DIRECTIONS:
+                    new_x = (direction[1] + coords[1]) % self._width
+                    new_y = (direction[0] + coords[0) % self._height
+                    if self._grid[new_y][new_x].get_occupant() == 'deer':
+                        occupant.eat('deer')
+                        self._grid[new_y][new_x].set_occupant(None)
+                        
         if choice == 'move_north':
-            pass
+            new_x = (coords[1]) % self._width
+            new_y = (coords[0]+1) % self._height
+            if self._grid[new_y][new_x].get_occupant() is None and self._grid[new_y][new_x].get_terrain() != 'water':
+                occupant.set_cell(self._grid[new_y][new_x])
+                self._grid[new_y][new_x].set_occupant(occupant)
+            else:
+                choice == 'move_east'
+                
         if choice == 'move_east':
-            pass
+            new_x = (coords[1]+1) % self._width
+            new_y = (coords[0]) % self._height
+            if self._grid[new_y][new_x].get_occupant() is None and self._grid[new_y][new_x].get_terrain() != 'water':
+                occupant.set_cell(self._grid[new_y][new_x])
+                self._grid[new_y][new_x].set_occupant(occupant)
+            else:
+                choice == 'move_south'
+                
         if choice == 'move_south':
-            pass
+            new_x = (coords[1]) % self._width
+            new_y = (coords[0]-1) % self._height
+            if self._grid[new_y][new_x].get_occupant() is None and self._grid[new_y][new_x].get_terrain() != 'water':
+                occupant.set_cell(self._grid[new_y][new_x])
+                self._grid[new_y][new_x].set_occupant(occupant)
+            else:
+                choice == 'move_west'
+                
         if choice == 'move_west':
-            pass
+            new_x = (coords[1]-1) % self._width
+            new_y = (coords[0]) % self._height
+            if self._grid[new_y][new_x].get_occupant() is None and self._grid[new_y][new_x].get_terrain() != 'water':
+                occupant.set_cell(self._grid[new_y][new_x])
+                self._grid[new_y][new_x].set_occupant(occupant)
+
+        occupant.set_flag()
         occupant.reduce_energy(1)
-        if occupant.get_water()==0:
+        if occupant.get_water()<=0:
             occupant.reduce_energy(1)
-        
+        else:
+            occupant.reduce_water(1)
+        if occupant.get_energy <= 0:
+            cell.occupant = None
+            
 class Cell:
     def __init__(self, grid, coords):
         self._occupant = None
@@ -115,12 +176,29 @@ class Dirt(Terrain):
         return False
 
 class Animal:
-    def __init__(self, type, cell):
+    def __init__(self, type, cell, genome=None):
         self._type = type
         self._cell = cell
         self._energy = MAX_ENERGIES[type]
         self._age = 0
         self._hydro = MAX_HYDRO[type]
+        self._flag = False
+        if genome is None:
+            self.set_genetics()
+        else:
+            self._this_dirt_weight = genome[0]
+            self._this_grass_weight = genome[1]
+            self._NESW_weights = genome[2]
+            self._eat_weights = genome[3]
+            self._move_weights = genome[4]
+            self._repro_weights =genome[5]
+            self._nothing_weights = genome[6]
+            self._drink_weights =genome[7]
+            self._n_weight = genome[8]
+            self._e_weight = genome[9]
+            self._s_weight = genome[10]
+            self._w_weight = genome[11]
+            self._genome = genome[12]
     
     def set_genetics(self):
         """
@@ -144,7 +222,25 @@ class Animal:
         self._s_weight = [random.random(-10,10) for i in range(21)]
         self._w_weight = [random.random(-10,10) for i in range(21)]
         self._genome = [self._eat_weights, self._move_weights, self._repro_weights, self._nothing_weights, self._drink_weights]
-    
+
+    def output_genetics(self):
+        genes = [
+            self._this_dirt_weight,
+            self._this_grass_weight,
+            self._NESW_weights,
+            self._eat_weights,
+            self._move_weights,
+            self._repro_weights,
+            self._nothing_weights,
+            self._drink_weights,
+            self._n_weight,
+            self._e_weight,
+            self._s_weight,
+            self._w_weight,
+            self._genome
+        ]
+        return genes
+        
     def check_living(self):
         if self._energy <= 0:
             return False
@@ -153,6 +249,45 @@ class Animal:
     def eat(self, target):
         self._energy = max(self._energy + ENERGIES[target], MAX_ENERGIES[self._type])
 
+    def drink(self):
+        self._hydro = MAX_HYDRO[type]
+
+    def get_energy(self):
+        return self._energy
+
+    def get_hydro(self):
+        return self._hydro
+
+    def get_age(self):
+        return self._age
+
+    def increment_age(self):
+        self._age += 1
+
+    def reduce_energy(self, amount = 1):
+        self._energy -= 1
+
+    def reduce_hydro(self, amount = 1):
+        self._hydro -= 1
+
+    def get_type(self):
+        return self._type
+
+    def get_cell(self):
+        return self._cell
+
+    def set_cell(self, cell):
+        self._cell = cell
+
+    def set_flag(self):
+        self._flag = True
+
+    def get_flag(self):
+        return self._flag
+
+    def reset_flag(self):
+        self._flag = False
+        
     def decision(self):
         """
         Gather info about surrounding cells and own info
