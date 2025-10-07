@@ -135,9 +135,10 @@ class World:
                 for direction in DIRECTIONS:
                     new_x = (direction[1] + coords[1]) % self._width
                     new_y = (direction[0] + coords[0]) % self._height
-                    if self._grid[new_y][new_x].get_occupant().get_type() == 'deer':
-                        occupant.eat('deer')
-                        self._grid[new_y][new_x].set_occupant(None)
+                    if self._grid[new_y][new_x].get_occupant() is not None:
+                        if self._grid[new_y][new_x].get_occupant().get_type() == 'deer':
+                            occupant.eat('deer')
+                            self._grid[new_y][new_x].set_occupant(None)
                         
         if choice == 'move_north':
             new_x = (coords[1]) % self._width
@@ -323,7 +324,7 @@ class Animal:
         self._energy = max(self._energy + ENERGIES[target], MAX_ENERGIES[self._type])
 
     def drink(self):
-        self._hydro = MAX_HYDRO[type]
+        self._hydro = MAX_HYDRO[self._type]
 
     def get_energy(self):
         return self._energy
