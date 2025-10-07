@@ -1,8 +1,8 @@
 import random
 
 
-HEIGHT = 20
-WIDTH = 20
+HEIGHT = 10
+WIDTH =10
 CELLS = HEIGHT * WIDTH
 TERRAINS = ['grass', 'dirt', 'water']
 MAX_ENERGIES = {'deer':10, 'wolf':20}
@@ -13,8 +13,8 @@ ANIMALS = ['deer', 'wolf']
 ACTIONS = ['eat','move','reproduce','nothing','drink']
 DIRECTIONS =[(1,0),(0,1),(-1,0),(0,-1)]
 WATER_CHANCE = .25
-DEER_POP = CELLS // 30
-WOLF_POP = CELLS // 15
+DEER_POP = int(CELLS * .3)
+WOLF_POP = int(CELLS * .15)
 
 class World:
     
@@ -110,7 +110,7 @@ class World:
             for direction in DIRECTIONS:
                 new_x = (direction[1] + coords[1]) % self._width
                 new_y = (direction[0] + coords[0]) % self._height
-                if self._grid[new_y][new_x].get_occupant() is None:
+                if self._grid[new_y][new_x].get_occupant() is None and self._grid[new_y][new_x].get_terrain() != 'water':
                     # Reproduce 
                     new_animal = Animal(occupant.get_type(), self._grid[new_y][new_x], occupant.output_genetics())
                     new_animal.set_flag()
@@ -395,10 +395,10 @@ class Animal:
                 grasses += 1
             else:
                 waters += 1
-            if this_terrain == 'dirt':
-                this_cell = self._this_dirt_weight
-            elif this_terrain == 'grass':
-                this_cell = self._this_grass_weight
+        if this_terrain == 'dirt':
+            this_cell = self._this_dirt_weight
+        elif this_terrain == 'grass':
+            this_cell = self._this_grass_weight
         e_deficit = MAX_ENERGIES[self._type] - self._energy
         w_deficit = MAX_HYDRO[self._type] - self._hydro
         results = []
@@ -440,7 +440,7 @@ class Animal:
             for i in range(4):
                 sum = 0
                 for j in range(4):
-                    a = occupants [j]
+                    a = occupants[j]
                     if a == 'deer':
                         s = 1
                     if a == 'wolf':
@@ -467,6 +467,7 @@ class Animal:
                 sum += dirts * self._genome[i][19]
                 sum += waters * self._genome[i][20]
                 results.append(sum)
+            print(results)
             m = max(results)
             ind = results.index(m)
             if ind == 0:
@@ -477,6 +478,7 @@ class Animal:
                 decision = 'move_south'
             else:
                 decision = 'move_west'
+        print(decision)
         return decision
         
 class Deer(Animal):
