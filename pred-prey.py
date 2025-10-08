@@ -1,21 +1,21 @@
 import random
 
 
-HEIGHT = 15
-WIDTH = 15
+HEIGHT = 30
+WIDTH = 30
 CELLS = HEIGHT * WIDTH
 TERRAINS = ['grass', 'dirt', 'water']
-MAX_ENERGIES = {'deer':10, 'wolf':20}
-ENERGIES = {'grass':8, 'deer':15}
+MAX_ENERGIES = {'deer':12, 'wolf':20}
+ENERGIES = {'grass':6, 'deer':12}
 MAX_HYDRO = {'deer':15, 'wolf':22}
-SPAWN_CHANCES = {'grass': .15, 'deer':.21, 'wolf': .08}
+SPAWN_CHANCES = {'grass': .05, 'deer':1, 'wolf': .7}
 ANIMALS = ['deer', 'wolf']
 ACTIONS = ['eat','move','reproduce','nothing','drink']
 DIRECTIONS =[(1,0),(0,1),(-1,0),(0,-1)]
 WATER_CHANCE = .25
-DEER_POP = int(CELLS * .3)
-WOLF_POP = int(CELLS * .15)
-MUTATION_RATE = .1
+DEER_POP = int(CELLS * .2)
+WOLF_POP = int(CELLS * .08)
+MUTATION_RATE = .2
 
 class World:
     
@@ -137,12 +137,20 @@ class World:
             occupant.reduce_hydro(-1)
         if choice == 'reproduce':
             for direction in DIRECTIONS:
+                if random.random() >= SPAWN_CHANCES[occupant.get_type()]:
+                    break
                 new_x = (direction[1] + coords[1]) % self._width
                 new_y = (direction[0] + coords[0]) % self._height
                 if self._grid[new_y][new_x].get_occupant() is None and self._grid[new_y][new_x].get_terrain() != 'water':
-                    # Reproduce 
+                    # Reproduce
+
+                    if occupant.get_type() == 'deer':
+                        occupant.reduce_energy(1)
+                    else:
+                        occupant.reduce_energy(1)
                     new_animal = Animal(occupant.get_type(), self._grid[new_y][new_x], occupant.output_genetics())
                     new_animal.set_flag()
+                    new_animal.set_energy(occupant.get_energy())
                     self._grid[new_y][new_x].set_occupant(new_animal)
                     break
                     
@@ -161,6 +169,7 @@ class World:
                     cell.set_terrain('dirt')
                     
             else:
+                #occupant.reduce_energy(1)
                 for direction in DIRECTIONS:
                     new_x = (direction[1] + coords[1]) % self._width
                     new_y = (direction[0] + coords[0]) % self._height
@@ -177,7 +186,7 @@ class World:
                 occupant.set_cell(self._grid[new_y][new_x])
                 self._grid[new_y][new_x].set_occupant(occupant)
             else:
-                choice == 'move_east'
+                choice = 'move_east'
                 
         if choice == 'move_east':
             new_x = (coords[1]+1) % self._width
@@ -187,7 +196,7 @@ class World:
                 occupant.set_cell(self._grid[new_y][new_x])
                 self._grid[new_y][new_x].set_occupant(occupant)
             else:
-                choice == 'move_south'
+                choice = 'move_south'
                 
         if choice == 'move_south':
             new_x = (coords[1]) % self._width
@@ -198,7 +207,7 @@ class World:
                 occupant.set_cell(self._grid[new_y][new_x])
                 self._grid[new_y][new_x].set_occupant(occupant)
             else:
-                choice == 'move_west'
+                choice = 'move_west'
                 
         if choice == 'move_west':
             new_x = (coords[1]-1) % self._width
@@ -209,14 +218,16 @@ class World:
                 self._grid[new_y][new_x].set_occupant(occupant)
 
         occupant.set_flag()
-        occupant.reduce_energy(random.uniform(0,2.7))
+        occupant.reduce_energy(1.3)
         if occupant.get_hydro()<=0:
             occupant.reduce_energy(1)
         else:
             occupant.reduce_hydro(1)
         occupant.increment_age()
         if occupant.get_energy() <= 0:
+            coords = occupant.get_cell().get_coords()
             cell.set_occupant(None)
+            self._grid[coords[0]][coords[1]].set_occupant(None)
             
 class Cell:
     def __init__(self, grid, coords):
@@ -400,7 +411,10 @@ class Animal:
 
     def reset_flag(self):
         self._flag = False
-        
+
+    def set_energy(self, energy):
+        self._energy = energy
+
     def decision(self):
         """
         Gather info about surrounding cells and own info
@@ -528,6 +542,7 @@ class Wolf(Animal):
         super().__init__('wolf', cell)
         
 world = World()
-for _ in range(30):
-    i = input()
+for j in range(5000):
+    if j % 50 == 0:
+        input()
     world.forward_step()
