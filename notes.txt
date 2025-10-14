@@ -1,0 +1,85 @@
+900047 – Evloution as a theme 1990
+Macro evolution
+Large pop in environ – not based on differential equations
+Genotype (bit string) phenotype (program embedded in genotype)
+Study natural evolution
+Issues with methodology
+	What is life and what is an organism.
+	How to be sure behavior isn’t guided or deterministic.
+	How to represent organism
+Code program as a bit string and do bit level mutations. 
+Start with pop of random organisms (did this cause a faster evolution rate?_
+
+Artificial ants did not have built in ability to coordinate sensory inputs with motor output. After 10 generations 20-80% of population had ability and was nearly perfect at the task.
+Uses finite state automata
+Memory less important, Genetics is space efficient.
+Pure random genetics very rarely produces an effective organism.
+Early evolution focuses on competency, later generations specialize.
+High mutation rate means more of population is ineffective
+
+9780262 Modeling evo of mimicry
+Cellular automata used to represent a pattern which is how the species displays themselves and to preditors.
+Hopfield network for memory of patterns
+Crossover transfer then mutation
+Sets goals, allows animals to select mates.
+Sets weight to zero and use Hebbian learning
+Subpopulations arise that exploit the predators recognition of unplalatable features
+Subpopulations arose from predators that could recognize different patterns
+Some initial conditions caused all prey to be consumed or all predators to die out.
+Fixed memory limits.
+
+Ebsco -10/13 comprehensive overview
+Develop heuristics based on insects, such as colony behavior
+ACO can be used for combinatorial solutions.
+EC use in robotics using Hebbian learning with neural net
+Use in computer graphics and character/agent design.
+Heavy use in development of intelligent AI in games and entertainment, as Alife allows for AI model to upgrade itself and discover new strategies.
+Can be used in Music to allow pleasant music to naturally evolve from user evaluation
+User evaluation is then stored and used to train a NN
+User is often bottle neck in these application.
+
+Genetic algorithm lit review
+GA’s are search based algoriths
+Chromosomes are represented as binary strings
+Crossover then mutation
+Image processing, GA tends to avoid local extreme traps.
+The fitness function can be mutated as well and applied to different domains.
+
+PIIS0169 Species delimitation
+Use Machine learning to analyze Genome and cluster populations into a holotype.
+RNN has memory limits compared to MM
+Can track genetic drift and paint how a species may have evolved.
+
+Tj taylor
+Too long
+
+Ebsco Abandoning Objective
+Fitness functions often reach local opima and can restrict evolution
+If selection pressure is to high, deviation is punished too much for evolution.
+Deception – if lower order building blocks do not lead to a global optiumum
+What about nature causes complexity to increase?
+Early open-ended simulations developed complex behaviors, but innovation slows with time.
+Uses NE – NEAT – to evolve ANN
+	Causes incremental growth and allows for specialization later.
+Rewards novelty instead.
+Measures distance of behavior from previous entities, saves individuals of sufficient distance.
+Novelty search was substantially faster than a fitness approach, but only if the space of possible behaviors is constrained..
+
+Lecnotes
+What is life. 
+	Reproduction, maintenance, metabolism, etc
+	Categorize and control events in surrounding but they must be relevant.
+Focus on self organizing behavior. Attractors exist in state space that cause initial conditions to converge to small areas (attractor basins)
+Bifurcation – small changes in parameters cause gradual changes in trajectory, but certain points in the parameter space cause extreme sudden changes. Close to these points, sensitivity increases
+GTYPE and PTYPE
+GYTPE is rules of dynamics (initial conditions)
+PTYPE is description of behavior 
+
+Link 1 – The surprising creativity
+Easy for algorithm to exploit fitness function, easier than achieving outcome.
+Sometimes GA can manipulate fitness function directly.
+Agents learn to respond to evaluation tools and hide information.
+Agents could exploit imperfect physics and math tools.
+Agents can evolve unexpected tools to optimize fitness.
+Sometimes optimal solutions only occupy a small genetic space, and good enough solutions are very very broad. Optima can be poor in practice and less robust.
+Some genes overlapped with vital genes in genome, cause these genes to be hidden or protected.
