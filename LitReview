@@ -1,0 +1,49 @@
+Introduction
+This literature review examines the use of genomes, genetic algorithms, and fitness functions in Artificial Life. It also aims to consider the possible applications of these techniques outside of simulations and in a variety of domains. As our capstone project is to create an artificial life simulator, all of these topics are vital for developing an understanding of practices and constraints in the field. Due to our need for foundational knowledge, materials from a broad range of years were selected for review. Our project aims to simulate a large number of agents all interacting in an environment. These agents will each have a genome that describes it’s physical attributes (metabolism, mobility, ability to synthesize chemicals, etc.) as well as some instinctual behavior. Learned behaviors are implemented via neural nets. Because of this, special interest is paid to sources that discuss complex behaviors, genetic coding techniques, and results of different implementations.
+
+Section 1. Philosophy
+Many of the sources viewed reserved sections for the philosophy of artificial life. These tended to be posed as open questions that the authors needed to answer to justify their experiments. Interestingly, some of the questions posed were left open and presently unanswered.
+1.1	What is life?
+Artificial life seeks to create organisms from synthetic sources, rather than natural sources. In order to delineate between automata and life, a clear metric is needed. Unfortunately, this means researchers need to determine what constitutes life and how to represent life. SOURCE recognizes that this question is expected to become more complex as artificial life develops and implements life in several different ways [1]. The simulation the researchers built required that life is represented by a small program which is subject to both mutation and inheritance. This is a great simplification of life, as the requirements could be a simple automaton. However, the researchers felt that a sufficiently complex model would give rise to emergent behaviors not possible with an automaton.
+According to LECNOTES, life needs to have common behaviors and phenotypes we associate with living, such as reproduction, self-maintenance, and a metabolism [7]. However, these are not necessarily indicators of life. Instead, the authors propose that life has to be able to recognize and control events in their surroundings, and that these events and responses must be relevant to the organism. Additionally, self-organization should be considered a hallmark of life due to its ubiquity in the natural world.
+1.2	Is behavior truly emergent?
+Many of the sources read mused as to whether the agents behavior was guided in some way. In other words, how is bias introduced into the system by the experimenter. SOURCE describes this as the ‘credit assignment’ problem [1]. If a species succeeds, how much of that success was a result of evolution and how much was because of initial conditions or limitations with the fitness function. This particular paper used 2 different paradigms to model the genetics, thus ensuring that inherent bias favoring one paradigm is not carried over into the second paradigm. An additional suggestion is made to seed initial genomes with mostly 0’s, which aims to guarantee that evolution is not kickstarted by random initial conditions.
+Sometimes what appears to be emergent behavior is actually deterministic. For example, SOURCE describes several situations in which models maximize their fitness function in very few generations and a wide range of initial conditions are attracted to this outcome [8]. It turns out that improperly designed fitness functions, or errors in the simulation environment cause optimal solutions to be exploitable. In this case, the exploitation may circumvent controls and easily maximize the fitness function.
+ A potential workaround is explored by SOURCE: Novelty Search [6]. The authors describe limitations with fitness functions and instead abandon the idea of one. Instead, agents are measured on novelty, or how different their behavior is from existing behaviors. The paper argues that high selective pressure results in poor species diversification and low complexity. It posits that real evolutionary systems are guided by a search for complexity, rather than fitness. This approach actively encourages exploration of the behavior space, and produces wildly different results with the same initial conditions.
+Section 2 – Encoding genetics
+A common technique with genetic algorithms is to encode a genotype as a bit string, and the phenotype as an interpretation of the bit string. SOURCE used a roughly 450 bit genome and the phenotype being represented in the genome, while SOURCE utilized a 12 bit genome and the phenotype being a simple interpretation of this data [2]. The latter of these 2 also employed a neural net brain for the agents which could not be inherited, and was not present in the genome.
+The lecture notes by SOURCE makes a broader generalization between these 2 [7].    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Citations
+[1] Evolution as a theme
+[]2 Modelling evo of mimicry
+[3] Comprehensive overview
+[4] Genetic Algo lit review
+[5] Species delimiting
+[6] Abandoning Objective
+[7] Lecnotes
+[8] the surprising creativity
+[9] Genetic algorithm
