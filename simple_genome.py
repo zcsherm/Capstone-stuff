@@ -1,6 +1,18 @@
 import random
 import numpy as np
 
+FOOD_DECAY_LOWER_BOUND = .01
+FOOD_DECAY_UPPER_BOUND = .1
+
+def food_decay_rate(principal):
+    """
+    Possible function for decay rate as a function of time steps since object creation:
+    f(t)=P(e+m)^-x
+    P is initial loaded in amount
+    and m is a value between 1.001 and 1.11
+    """
+    pass
+    
 class Chemical:
     """
     Generic class for a particular chemical. Arbitrary. Essentially will be a container in each individual and environment object
@@ -28,7 +40,7 @@ class Food:
     def __init__(self):
         self._chems = []
         self._energy = 0
-        self._degrade_multiplier = 1
+        self._degrade_multiplier = 0
         self._size = 0
         self.random_food()
         self.get_size()
@@ -37,7 +49,7 @@ class Food:
         """
         Generate a random food that contains 1-3 chemicals with varying strengths.
         """
-        self._degrade_multiplier = random.randint(5,30)
+        self._degrade_multiplier = random.randint(FOOD_DECAY_LOWER_BOUND, FOOD_DECAY_UPPER_BOUND)
         chems = random.randint(1,3)
         chemical = random.randint(0,7)
         for i in range(chems):
@@ -70,6 +82,9 @@ class Food:
         self._size = size
         
     def check_death():
+        """
+        Checks if any chemicals in the food are degraded sufficiently to remove them or the entire food source
+        """
         if size <= 1:
             self._size = 0
             self._chems = []
@@ -77,4 +92,6 @@ class Food:
         self._chems = [chemical for chemical in self._chems if chemical.get_quantity() > 1]
         if self._energy <= 1:
             self._energy = 0
-            
+
+# Lookup table for general binary instructions
+INSTRUCTIONS = {}
