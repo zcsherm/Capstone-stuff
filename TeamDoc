@@ -1,0 +1,37 @@
+Elicitation
+
+As Artificial Life is an evolving, multidisciplinary field, our initial research focuses on 4 distinct topics:
+•	Genetics/Biology
+•	Foundational Artificial Life and Genetic Algorithms
+•	Machine Learning and Artificial Intelligence
+•	Modern Approaches
+Our hope is to survey both historical and modern techniques for implementing an artificial life simulator, and to cultivate the knowledge to expand on them. The first two topics are foundational and will equip us with the knowledge and terminology to explore more advanced topics.
+
+Genetics and Biology
+Our research here is primarily concerned with how the natural parallels of A-life concepts behave. Some topics we concern ourselves with include: DNA structure, DNA encoding, Mendelian genetics, inheritance, biochemistry, and gene expressions. 
+As much of this well documented, our primary sources have primarily been from textbooks and other educational material. These materials describe the general process by which DNA informs the biology and behavior of an organism, as well as how DNA is encoded and processed. Of note, was the difference between haploid and diploid chromosomes.
+Some questions this research uncovered were:
+•	To what extent can these systems be abstracted without losing their emergent quality?
+•	It appears that the complexity of modern life rests on an unimaginable amount of interactions between genes, however this would prove too computationally expensive for our hardware. If we simplify these, so that a gene decodes a large structure, does our system lose flexibility?
+•	If certain nucleotides tell the RNA to begin and stop decoding, how does the nucleotide know the general area to begin looking for its start and stop codon? (Appears to be that RNA stores a pointer to the gene or region of DNA to begin encoding?)
+Foundational Artificial Life and Genetic Algorithms
+	This topic is where we are now concerned about methods used in the past and what is considered ‘industry standard’. Much of the research at this point is still centered around textbooks and educational material, but older scholarly articles were also referenced.
+	Some of the more significant findings included common ways of representing DNA (bitstring, directed graph), typical mutation and crossover rates, common fitness functions, as well as how dynamic reading of DNA can be modelled.
+	Some of our questions were:
+•	When the DNA is interpreted as instructions, it appears that the program is run serially. How can we handle multiple portions of the organism being run simultaneously?
+•	Many of the examples were concerned with using Genetic Search as a problem solving method. Thus the fitness function was well defined. Without an explicit fitness function (other than successful reproduction and survival) how does this system hold up?
+•	When having a bitstring genetic code that is also read to parse instructions for the organism to take, is it prudent to separate the instructional DNA from the portion that describes the physical structure of the organism?
+
+Machine Learning and Artificial Intelligence
+	We primarily referred to online guides and walkthroughs for this topic, as we wanted a practical understanding of what models we could implement. We focused on Recurrent and Convolutional Neural Nets, clustering algorithms, pattern recognition, and backpropagation methods. We were curious how viable it would be to have every organism in the simulation be an intelligent agent.
+	We found several lightweight and easy to implement neural net frameworks for Python that proved promising. We also found several artificial life models that implement a neural network brain that is distinctly separate from its internal organs. In this instance, it appears that DNA was used more as construction data, rather than also working as the primary activator for the organism.
+	Some questions we are considering:
+•	How viable is it to have every agent using a neural net in a simulation with thousands of agents?
+•	How expensive is backpropagation in this context? How limiting is a pure feedforward method?
+•	How much of the “brain” should be inheritable? Should weights always start random or should weights be passed down?
+•	Can new instances share knowledge or learn from others?
+•	How can the simulated biology inform the brain’s decisions? Should weights be dynamic?
+Modern Approaches
+	This final category required reading modern literature and scholarly sources. Our hope was to learn of recent advances that would make our project more engaging. A struggle we faced early on, was that we lacked a considerable amount of the requisite knowledge to make these resources useful.
+	We learned some interesting things from this line of research. For example, we learned how AI models can be used to construct a phylogeny for the simulation. An interesting tidbit was how certain researchers modelled and abstracted shape and pattern as a cellular automata, effectively giving each species a distinct appearance without having to render it.
+	We also learned many pitfalls and exploitations that certain systems developed. For example, having too strong of a selective pressure caused species to stagnate into local optimums, while too strong of a fitness function caused agents to develop in a highly specific way. An interesting find concerned how deterministic these systems could be. It’s suggested that a purely random initialization of a genome may kickstart evolution along a particular direction.
