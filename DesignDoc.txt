@@ -1,0 +1,3 @@
+1. Table of design areas and assignments
+Introduction.
+    Our project aims to create an Artificial Life simulation using a bottom-up approach. Our design philosophy is that complex phenotypes and attributes will arise solely through the interaction of small building blocks like genes and organs. In addition to being highly emergent, we also need our system to track statistics, and be visually interesting in some way. Breaking down these requirements, we can divide our task into several functional areas. The first being that 'Emergent genomes are created via reproduction and mutation'. 
