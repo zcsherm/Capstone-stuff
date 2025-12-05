@@ -1,0 +1,36 @@
+Describe each task and give a scenario.
+Scanning a document
+
+	This function is the primary way that users will interact with the app. This task allows the user to take an image of a written document, edit it, and export it in a desired format. 
+
+Ex. Miguel has to upload a written version of his math notes for his Cryptography class. His notes have lots of math equations and symbols, and he doesn’t want to waste time he could be studying by typing all of that up. He opens our scanner app and selects ‘Scan a Document’. On the next screen he aligns his note sheet with the outline, and hits ‘Scan’. The app scans the document and captures written sections into text, and math symbols and equations into LaTeX. The next screen asks if he wants to make any changes to the transcribed document. Finally, he can choose a file type to export it as. The transcribed note sheet is then downloaded and saved in the app.
+
+Saving a snip
+	
+  This function allows users to select small segments of documents to form flashcard-like elements. This lets users refer back to specific items with greater ease.
+
+Ex. With Miguels test coming up, he wants to single out some equations from his notes so that he can study them. Now that Miguel has his note saved, he clicks on ‘Notes’ from the home page. He then selects the note sheet he scanned earlier, and clicks the scissors labeled ‘Snip’ at the top of the page. Then, he highlights the section of his notes he wants to snip out. From here he can edit it, assign it a name, as well as give it tags so that he can search for it more easily.
+
+Exporting a snip
+
+  This allows a user to export the contents of a snip in a desired format. This lets users easily access the properly formatted snip, without having to scan the entire document.
+
+Ex. Emily is in a Linear Algebra course that has a discussion board. Each week she has to make a post that has lots of matrices in it. Rather than formatting each matrix into LaTeX manually, she wants to copy and paste commonly used ones. She goes to ‘Snips’ from the home page and selects the 2x2 Rotation Matrix that she saved earlier in the course. She clicks ‘Export’ and the LaTeX code for that Matrix is copied to her clipboard. All she needs to do is paste it in her discussion board post and she’s done.
+
+Sharing notes
+
+  Sharing notes is a social feature of the app. It allows users to send anything they’ve scanned or snipped to other users.
+
+Ex. Angela missed a physics lecture the previous day and is worried she missed out on some important topics. Lance wants to help her out and share his notes with her. He navigates to his notes and selects the lecture from yesterday. He clicks ‘Share’ and is now presented with a list of his friends. He selects Angela from the list and sends the document to her. She now has that note sheet saved in her notes as well.
+
+Building a cheatsheet
+
+  This feature lets users compile snips into a crib-sheet or note sheet. This helps users’ study more effectively and create a study guide tailored to their own learning.
+
+Ex. Hiro needs to study for his Calculus final. He feels pretty confident about most topics except integration by parts and multiple integration. He navigates to his snips and selects ‘Create cheatsheet’ at the bottom of the page. He then is asked to select any number of snips to add to his custom sheet. He selects snips that have equations related to the two topics he wants to study. After finalizing the selection, he now has a sheet in his notes that compiled all those snips together. 
+
+Editing a snip
+
+  This feature lets users adjust previously saved information. This is important for users who may save information that is subject to revision or update.
+Ex. Olga works as a technician for an office building. Every vendor they deal with his different contact information and different web portals. To make this easier, Olga created snips for each vendor that shows the phone number and website URL. The elevator manufacturer changed their process for opening a ticket and there is new URL she has to go to. To update the 
+information, she navigates to the elevator company's snip and selects ‘Edit’ at the top. In the description, she removes the old address and puts the new one. Once she saves the changes, she now has up-to-date contact info for this vendor. 
