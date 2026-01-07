@@ -6,3 +6,86 @@ Hello everyone! My name is Zack Sherman and I'm a CS major in my (hopefully) las
 I took this class because I am interested in Machine Learning. I believe ML methods are important to understand and powerful statistical tools. I have read a fair amount on the subject, but I hope this class will provide opportunity to implement what I've learned. I think these methods are going to be valuable tools at my disposal later in my career. I hope to understand ML methods enough to implement them into my projects, either to achieve the desired function of the project, or to help automation. I don't have a particular career in mind but as long as it provides interesting problems to solve, I'll be happy. 
 
 
+A1
+Topic: “Do health care costs affect spending habits and, if so, what habits are most impacted.”
+DS1: https://www.kaggle.com/datasets/ahmedmohamed2003/spending-habits
+Reformat so label is healthcare spending, and the rest are spending in the respective categories etc.
+DS2: https://www.kaggle.com/datasets/asaniczka/us-cost-of-living-dataset-3171-counties
+Reformat so label is healthcare is categorical (ie, low moderate high) for their state. Normalize data with respect to each states average.
+Intro
+Healthcare can be a substantive cost for US citizens. Even with Health Insurance, costs for emergency visits and specialized care can balloon to nigh unpayable amounts. For example, child delivery in a hospital, which is considered a ubiquitous life experience in the US, averages a cost of around 3,000 dollars for the insured and 20,000 for the uninsured. An emergency appendectomy averages around 8,000 in final cash cost, according to one insurance company. Additionally, these emergencies are on top of expected healthcare costs, like check-ups, prescriptions, dental exams, and premiums. Due to this cost, it is noted that many people forgo basic healthcare actions. These facts raise questions concerning the quality of life for both those that use healthcare and those who don’t. 
+Presently, the US healthcare system is largely privatized and does not offer universal healthcare. While this is good for medical innovation and technology, it also means that costs are inflated when compared to other countries. This has resulted in roughly 1 in 4 Americans skipping recommended medical intervention due to the cost. This is a substantial number of individuals being impacted. If we consider that the CDC reports that 5% of individuals need hospitalization per annum and that this cumulative chance indicates an extremely high likelihood to need medical intervention during an individual’s life, this impacts almost every citizen. 
+This paper concerns the specific question of how healthcare costs affect spending habits and what those effects are. It is understood that, as healthcare costs for families increase, other types of spending must decrease, and that the inverse and the contrapositive are also true. This paper attempts to analyze what categories experience the largest fluctuation with respect to healthcare costs. This should provide insights into the quality-of-life changes that come from having health care costs. For example, does a larger healthcare bill indicate that these individuals are more at risk for being underhoused, malnourished/underfed, or financially vulnerable.
+
+
+Why
+	I’ve worked in the banking sector for 10 years and have considerable experience with personal finances. Additionally, at 32, I’m needing to reconcile my miserliness with my bodies need for medical attention. I have greatly ignored any sort of medical care as an adult out of fear that it would drain my savings or saddle me with copious debt. I chose this topic because I’m familiar with financial topics, and that it would help me address my own fears. Additionally, I know that I’m not the only person who feels similarly. I hope that this topic is relevant to many others as well. 
+
+DS1 Description
+This dataset is synthetically generated list of 10,000 transactions across 200 individuals. It has 8 variables. It was obtained from Kaggle. It is a mixed dataset, though we anticipate our cleaning process will make it purely quantitative. The original label is intended to be the customer ID, but our cleaned dataset will instead have healthcare spending as the label.
+Dataset features
+•	Customer ID
+o	A qualitative variable that indicates who made the transaction
+•	Category
+o	A qualitative categorical variable that groups transactions into general domain
+•	Item
+o	A qualitative variable that indicates the specific purchased item
+•	Quantity
+o	A quantitative variable that describes the amount of the item that was purchased
+•	Price per Unit
+o	A quantitative variable which reflects the per-unit cost of the specified item
+•	Total Spent
+o	A quantitative variable that reflects the total of the transaction
+•	Payment method
+o	A qualitative variable indicating how the purchase was done.
+•	Location
+o	A categorical variable which groups transactions based on purchase location, such is Online, In-store, etc.
+•	Transaction Date
+o	A qualitative variable for when the transaction was performed.
+Cleaning methodology
+	Presently, each row of the data represents a transaction. We want each row to instead reflect a single user. To do this, the transactions must be collated by Customer ID and then condensed. To better illustrate this, we have laid out the features of the desired format below (note that Customer ID becomes the index for each row and that each feature is quantitative):
+•	Healthcare
+o	The sum of all healthcare costs for an individual
+•	Groceries
+o	The sum of all grocery costs for an individual.
+•	Shopping
+o	The sum of all shopping costs for an individual
+•	Subscriptions
+o	The sum of all subscriptions or memberships for an individual
+•	Housing and Utilities
+o	The sum of all housing costs for an individual
+•	Transportation
+o	The sum of all transportation costs for an individual
+•	Food
+o	The sum of all food establishment costs for an individual
+•	Personal Hygiene
+o	The sum of all hygiene costs for an individual
+•	Fitness
+o	The sum of all fitness costs for an individual
+•	Travel
+o	The sum of all travel expenses for an individual
+•	Hobbies
+o	The sum of all hobby expenses for an individual
+•	Friend Activities
+o	The sum of all social activity expenses for an individual
+•	Gifts
+o	The sum of all gift costs for an individual
+•	Total
+o	The total expenditure by an individual
+•	Healthcare ratio
+o	The ratio of healthcare cost to total expenditures
+•	Average Food
+o	The average price of the grocery transactions and food transactions
+•	Average housing
+o	The average price of the individuals housing transactions
+•	Average recreation
+o	The average price of the Hobbies, Friend Activities, subscriptions, and shopping
+•	Average Travel
+o	The average price of each travel expense.
+To achieve this format, we begin by creating a new dataset with 200 rows and each of the above columns plus 
+DS2 Description
+Sources 
+https://www.healthsystemtracker.org/brief/health-costs-associated-with-pregnancy-childbirth-and-postpartum-care/
+https://cost.sidecarhealth.com/ts/appendix-removal-cost-by-state
+https://news.gallup.com/poll/698042/americans-experience-healthcare-state.aspx
+https://www.cdc.gov/nchs/hus/topics/hospitalization.htm
