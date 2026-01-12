@@ -84,6 +84,48 @@ o	The average price of the Hobbies, Friend Activities, subscriptions, and shoppi
 o	The average price of each travel expense.
 To achieve this format, we begin by creating a new dataset with 200 rows and each of the above columns plus 
 DS2 Description
+
+The second dataset contains budget information of 1877 counties around the US. It describes the average spending of households by category and household size. It has a total of X entries and Y features. After cleaning the dataset, the label will be a categorical description of how that family’s healthcare spending relates to that state’s average.
+Data features
+•	Case_id
+o	A categorical identifier for the county’s region
+•	State
+o	The state that the county resides in
+•	isMetro
+o	A Boolean that describes whether the county is part of a metropolitan area
+•	Areaname
+o	A qualitative string that provides the colloquial name of the region
+•	County
+o	The name of the county
+•	Family_member_count
+o	A categorical descriptor of how many parents and children are in the household.
+•	Housing_cost
+o	The estimated housing cost for a family of the given size in the county
+•	Food_cost
+o	The estimated food cost for a family of the given size in that county
+•	Transportation_cost
+o	The estimated cost of transportation in that county
+•	Healthcare_cost
+o	The estimated cost of healthcare in that county
+•	Other_necessities_cost
+o	The estimate cost of unlisted essentials in that county
+•	Childcare_cost
+o	The estimated cost of childcare in that county
+•	Taxes
+o	The estimated tax cost for that county
+•	Total cost
+o	The estimated total cost of living in that county
+•	Median_family_income
+o	The median income for a family of this size in the county
+Cleaning methodology.
+Presently, the data represents families of all sizes. While this is fantastic data to have, we want to reduce the number of independent variables in the data. Given the scope of this project, only households with a size of 1 will be examined. After dropping all rows with a family member count greater than 1, our data looks as follows:
+We can then iterate through the data and aggregate the healthcare income by state. From this, we can qualify each individual’s healthcare spending based on the state-wide average. We group the spending into 5 categories: Very Low, Low, Average, High, Very High. This gives us our desired label and looks as follows:
+Finally, we drop the following features, as they are not relevant attributes to our study: case_id, isMetro, areaname, county, family_member_count, and childcare_cost. To ensure our data is reliable, we drop any rows with invalid entries. The result looks as follows:
+We want to make sure that our label data follows the normal distribution expected. To verify that, we graph the frequency of each categorical label across our data:
+Additionally, we want to make sure that each state is equally represented. We can also chart the frequency that each state occurs:
+Finally, we can examine the total expenditures for each individual. By using a box plot, we can ascertain if there are any extreme outliers: 
+
+
 Sources 
 https://www.healthsystemtracker.org/brief/health-costs-associated-with-pregnancy-childbirth-and-postpartum-care/
 https://cost.sidecarhealth.com/ts/appendix-removal-cost-by-state
