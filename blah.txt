@@ -126,6 +126,34 @@ Additionally, we want to make sure that each state is equally represented. We ca
 Finally, we can examine the total expenditures for each individual. By using a box plot, we can ascertain if there are any extreme outliers: 
 
 
+A3
+Members and Roles
+Justin Barreras: Team Leader and Project Coordinator
+Zack Sherman: Team Coordinator and Project Leader
+Team:
+Group 39
+Communication Method
+The groups primary communication will be done via Discord, with email as a backup. This communication will be done through direct messages, and possibly a discord channel if the need arises.
+Members are expected to respond to respond within 6 hours of any message sent between the hours of 8:00 am and 8:00 pm pacific standard time. This timeframe is carried over to the following day if needed. For example, a message sent at 7:00 pm should be replied to by 2:00 pm of the following day. The requirement is that messages are addressed within 24 hours of receipt.
+Members are expected to use Github as the primary version control system. All new additions require testing of entire project functionality. While daily progress is not required, members are required to checkout the current version each time they make additions. As a consequence, members are required to push their current work after each session (within reason). This ensures that all members are operating on the same codebase and should eliminate most merge conflicts.
+Team Policies
+Group meetings shall be conducted with respect for members and the process. During meetings, all members are encouraged to share and will be allowed an opportunity to bring forth any ideas relevant to the project. Any disagreements should be addressed fairly. If disagreements cannot be resolved simply, each member should formalize their argument and present that argument to the opposite party. If no agreement can be reached, the group shall decide the outcome using a mediator. If no mediator is available, a decision can be reached using chance.
+The project will be managed through a Github repository. All members will have shared access with the ability to checkout the current version, as well as to submit pull requests. A Github project will also be created to track user stories, features, and requirements.
+Team members are expected to take the following actions when encountering the given situation.
+1.	Member is confused about what tasks to do.
+a.	Member should reach out to the project leader (or any project member) for clarification on tasks.
+2.	Member is unsure what the requirement of their tasks are.
+a.	The member should first review the assignment rubric for guidance. If confusion still exists, the member should then review the Github Project and read any relevant user stories. If the member is still unsure, the member should contact the team leader for guidance. If the team leader is unsure at this point, they should, as appropriate, create an Ed post, reach out to staff member, or perform additional research.
+3.	Do not hear back from another team member within 24 hours.
+a.	An additional message should be attempted (depending on timeframe and urgency). If no contact is established, the member should move forward independently as best they are able. This includes making decisions regarding the project, completion of assignments, and submission of assignments. If contact is not reestablished, the group member should reach out to the Teaching Staff.
+4.	Fall behind in their work.
+a.	The member should coordinate with other group members as soon as possible to share the current state of their work. Any tasks that the member cannot complete should be divided amongst other group members to ensure timely completion.
+5.	Think they will fall behind due to exigent circumstances.
+a.	The situation should be communicated as early as possible to other group members. Details regarding the situation are not necessary, as members are trusted to reserve this process for genuine needs. The group will anticipate that this member will be unable to contribute to their current assigned tasks, and these tasks should be divided amongst other group members.
+6.	Does not contribute sufficiently.
+a.	If the member self-identifies as having not contributed sufficiently, the expectation is that they will pick up extra work in the next assignment. If the member does not self-identify, the team leader is expected to communicate with that member. If a member believes they contributed sufficiently, they are allowed to share with the team leader what they contributed and why that is sufficient.
+
+
 Sources 
 https://www.healthsystemtracker.org/brief/health-costs-associated-with-pregnancy-childbirth-and-postpartum-care/
 https://cost.sidecarhealth.com/ts/appendix-removal-cost-by-state
