@@ -1,7 +1,40 @@
-Project
-	This project was a great exercise in moving forward independently on a deliverable. I always try to make people feel included and have struggled with being assertive or trusting my gut. But when communication is lacking and deadlines are nearing, I got a lot of experience making judgement calls and operating independently. Someone needs to step up and act when it’s crunch time, and I’m glad I got to experience being that person. It also gave me practice interpreting and incorporating my teammates work. To help complete assignments, I would ask groupmates to share their individual assignments and I would read through the ones that were shared. It helped me consider other viewpoints and ideas I would not have considered.
-	I also got lots of practice using Figma this term. I’d never used Figma before, and the only UI’s I ever make are simple system dialog box style ones. I have friends who use Figma daily in their jobs, so I felt like I was learning an actual and practical skill. It makes it much easier to develop consistent UI’s when you can lay everything out. I plan on using Figma going forward for UI development, and I’ve even started using it in other classes, though mainly to create diagrams. 
-Efficacy of design thinking
-	It was helpful performing a heuristic analysis on the prototype. I caught many small issues I may not have noticed otherwise. A major finding was that I never let the user choose an export option. I believe that many of the useability heuristics are self-evident, but even so, learning about each of them has been helpful in learning my blind spots. My biggest gaps in useability design were uniformity and matching real world systems. I learned just how inconsistent my UI layouts were, as well as what ideal layouts look like. Before this class, I would never really care if the ‘Back’ button was always in the same spot on each screen. I also tend to abstract things or lay them out in a way that makes sense programmatically, which often deviates from how that information might be presented or handled in the real world.
-	As far as advantages, I can see how a systematic approach to useability creates a better product. You want to maximize the people who will buy and use your product, so making it useable by everyone is necessary. Additionally, not everyone has the same skills or knowledge. Focusing on useability means that some users aren’t as disadvantaged as others. However, the downsides are noticeable. Useability design takes a lot of time and can slow down production. In a hierarchy (such as a corporation), this is especially evident. Useability isn’t cheap either. There are costs associated with research, prototyping, and testing, and it seems like the bill can run high on those. For smaller projects, this may become too prohibitive. 
-Ideas 
+Overview
+
+SHOPNAME is a locally owned trading card retailer. They sell thousands of different products, most being single cards without a traditional SKU and with fluctuating pricing. Traditional retail products may have less than a dozen on hand at a time, while SHOPNAME may carry thousands of a single card at a time. Additionally, they support the local gaming community of approximately 1000 individuals; Tracking customer trends is vital to better recommend products and to encourage brand loyalty. They average between 100-500 transactions per day, and managing their complex inventory is critical for both fulfilling customer orders and preserving client experience. They average between 100-500 transactions per day. SHOPNAME needs an efficient database to record their current inventory, track sales, and trace customer information.
+
+Database description
+Products
+	Details the specifications of products that the business may carry.
+	Productid: int, auto_increment, unique, not NULL, PK
+	Name: varchar(255), not Null
+	Price: decimal(12,2), not Null
+	Relationships:
+	M:N relationship with Inventories. Implemented using a junction table, Products-Inventories. ProductID is a foreign key inside this table.
+Inventories:
+	Details the different locations that the business has items at. For example, items in the display cases, stockroom, or in transit.
+	InventoryID: int, auto_increment, unique, not NULL, PK
+	Name: varchar(20), not NULL
+	atStore: BOOL, not NULL
+	M:N relationship with Products. Implemented using a junction table, Products-Inventories. InventoryID is a foreign key inside this table
+	M:N relationship with Sales. Implemented with a junction table, Sales-Inventories. InventoryID is a foreign key inside this table. 
+Customers:
+	Details specifics on SHOPNAMES customers.
+	customerID: int, auto_increment, unique, not NULL, PK
+	lastName: varchar(30), not NULL
+	firstName: varchar(30), not NULL
+Email: varchar(80)
+	Phone: varchar(15)
+	lastPurchase: datetime, default -> datetime that entity was created
+	points: int, not NULL, default -> 0
+	1:M relationship with Orders. Implemented by including customerID as a foreign key inside of Orders
+Orders:
+	Details every transaction that the store makes.
+	orderID: int, auto_increment, unique, not NULL, PK
+	date: datetime, not NULL, default -> Current datetime
+sequence: int, auto_increment, not NULL. Resets the counter to 0 at the start of each business day.
+	customerID: int, FK
+	amount: decimal(12,2), not NULL
+	pointsSpent: int
+	paid: decimal(12,2), 
+	M:N relationship with Inventories. Implemented with a junction table Orders-Inventories. orderID is a foreign key inside the table
+	M:1 relationship with Customers. Implemented by including customerID here as a foreign key
